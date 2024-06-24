@@ -4,119 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EVTECH PAY</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="EVTECH TECHNOLOGIES PAYMENTS">
     <meta name="keywords" content="EVTECH PAY, EVTECH TECHNOLOGIES, PAYMENTS">
-    <meta name="author" content="EVTECH TECHNOLGOIES">
+    <meta name="author" content="EVTECH TECHNOLOGIES">
 
     <meta property="og:title" content="EVTECH PAY">
-    <meta property="og:description" content="EVTECH PAYMENTS APP">
+    <meta property="og:description" content="EVTECH TECHNOLOGIES PAYMENTS">
     <meta property="og:image" content="https://evtechpay.ddns.net/evtechpay.png">
-    <meta property="og:url" content="">
-    <meta property="og:type" content="Payments Gateway">
+    <meta property="og:url" content="https://evtechpay.ddns.net">
+    <meta property="og:type" content="website">
+    
     <style>
-
-        body{
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: black;
+            height: 100vh;
+            margin: 0;
         }
         
-        #form{
+        #form {
             height: 80vh;
-            margin-top: 3vh;
+            margin: 20px;
             background-color: red;
-            width: 400px;
-            display: list-item;
-            align-items:flex-start;
+            width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
             border: 5px white solid;
             border-radius: 20px;
+            padding: 20px;
         }
 
-        .input{
+        .input {
             text-decoration: none;
-            border: 5px black solid ;
+            border: 5px black solid;
             width: 80%;
             height: 4vh;
             border-radius: 10px;
-            margin-top: 4vh;
-            margin-left: 10%;
+            margin-top: 2vh;
+            font-size: medium;
+            text-align: center;
         }
 
-
-        .input::placeholder{
+        .input::placeholder {
             color: black;
-            font-size: medium;
-            text-align: center;
         }
 
-        button.input{
+        button.input {
             height: 5vh;
-            text-align: center;
-            font-size: medium;
             color: white;
             background-color: black;
+            cursor: pointer;
         }
 
-        .qr-code{
-            text-decoration: none;
-            border-radius: 10px;
+        .qr-code {
             margin-top: 2vh;
-            margin-left: 25%;
         }
 
-        .qr-code canvas{
+        .qr-code canvas {
             border: 5px black solid;
             border-radius: 10px;
         }
-        img{
+
+        img {
             height: 100px;
             width: 100px;
-            margin-left: 30%;
-            margin-top: 3vh;
             border: 5px black solid;
             border-radius: 20%;
-            padding: 2% 2%;
+            margin-bottom: 20px;
+            padding: 2%;
         }
     </style>
-
 </head>
 <body>
     <div id="form">
-        <img src="logo.png" class="img">
-        <input class="input"  placeholder="Enter The Amount" id="amount" type="number">
+        <img src="logo.png" alt="EVTECH Logo" class="img">
+        <input class="input" placeholder="Enter Recipient's UPI ID or Phone Number" id="upiId" type="text">
+        <input class="input" placeholder="Enter The Amount" id="amount" type="number">
         <input class="input" type="text" placeholder="Enter A Note" id="note">
-        <button class="input" onclick="openUPILink()"> Upi Pay </button>
-
+        <button class="input" onclick="openUPILink()" title="Pay via UPI"> UPI Pay </button>
         <div id="qr-code" class="qr-code"></div>
-
     </div>
 
-</body>
-
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script>
         function generateUPIUrl() {
-            const upiId = 'evtechtgsai@fam'; // Replace with your recipient's UPI ID
-            const name = 'RecipientName'; // Replace with recipient's name
+            const upiId = document.getElementById('upiId').value; // Get the recipient's UPI ID from user input
             const amount = document.getElementById('amount').value;
             const note = document.getElementById('note').value;
             const currency = 'INR'; // Currency (INR for Indian Rupees)
 
-            const upiLink = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=${currency}&tn=${note}`;
-
-            return upiLink;
+            return `upi://pay?pa=${upiId}&am=${amount}&cu=${currency}&tn=${note}`;
         }
 
         function generateQRCode() {
             const upiLink = generateUPIUrl();
-
             const qrCodeContainer = document.getElementById('qr-code');
             qrCodeContainer.innerHTML = '';
-
+            
             QRCode.toCanvas(document.createElement('canvas'), upiLink, function (error, canvas) {
                 if (error) {
                     console.error('Error generating QR code:', error);
@@ -131,7 +119,9 @@
             window.location.href = upiLink;
         }
 
+        document.getElementById('upiId').addEventListener('input', generateQRCode);
         document.getElementById('amount').addEventListener('input', generateQRCode);
         document.getElementById('note').addEventListener('input', generateQRCode);
     </script>
+</body>
 </html>
