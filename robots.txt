@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /checkout/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /billing/
+Disallow: /subscription/
+Disallow: /download/
